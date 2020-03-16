@@ -1,6 +1,4 @@
 let {
-  getVerticalMoves,
-  getHorizontalMoves,
   getHorizontalAndVerticalMoves,
   getNewXPostionFromLetter,
   getDiagonalMoves,
@@ -36,16 +34,10 @@ function getPossiblePawnMoves(x, y) {
 
 function getPossibleKnightMoves(x, y) {
   let allMoveCombinations = [[-1, 2], [1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1]]
-  let avaiableMoves = []
 
-  allMoveCombinations.forEach(function(combo) {
-    let newX = getNewXPostionFromLetter(x, combo[0])
-    let newY = y + combo[1]
-    if (isWithinBoardParameter(newX, newY)) {
-      avaiableMoves.push([newX, newY])
-    }
-  })
-  return avaiableMoves
+  return allMoveCombinations.map(function(coords) {
+    return [getNewXPostionFromLetter(x, coords[0]), y + coords[1]]
+  }).filter(coords => isWithinBoardParameter(coords[0], coords[1]))
 }
 
 module.exports = {

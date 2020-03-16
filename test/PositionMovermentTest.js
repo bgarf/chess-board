@@ -1,38 +1,15 @@
 let {
   getHorizontalAndVerticalMoves,
+  getAxisMovesByDirection,
   getNewXPostionFromLetter,
   getDiagonalMoves,
   isWithinBoardParameter
 } = require('../js/PositionMovement')
 let assert = require('chai').assert
+let ChessBoard = require('../js/board.js');
 
 describe('PositionMovement', function() {
-  board = {
-    A: {
-      1: 'rook', 2: 'pawn', 3: '', 4: '', 5: '', 6: '', 7: 'pawn', 8: 'rook'
-    },
-    B: {
-      1: 'knight', 2: 'pawn', 3: '', 4: '', 5: '', 6: '', 7: 'pawn', 8: 'knight'
-    },
-    C: {
-      1: 'bishop', 2: 'pawn', 3: '', 4: 'bishop', 5: '', 6: '', 7: 'pawn', 8: ''
-    },
-    D: {
-      1: 'queen', 2: 'pawn', 3: '', 4: '', 5: '', 6: '', 7: 'pawn', 8: 'queen'
-    },
-    E: {
-      1: 'king', 2: 'pawn', 3: '', 4: '', 5: '', 6: '', 7: 'pawn', 8: 'king'
-    },
-    F: {
-      1: 'bishop', 2: 'pawn', 3: '', 4: '', 5: '', 6: 'pawn', 7: '', 8: 'bishop'
-    },
-    G: {
-      1: 'knight', 2: 'pawn', 3: '', 4: '', 5: 'pawn', 6: '', 7: 'pawn', 8: 'knight'
-    },
-    H: {
-      1: 'rook', 2: '', 3: 'pawn', 4: '', 5: '', 6: '', 7: 'pawn', 8: 'rook'
-    }
-  }
+  let board = new ChessBoard
 
   describe('#getHorizontalAndVerticalMoves', function() {
     it('should return the next positions directly next to the current postition, horizontally and vertically', function() {
