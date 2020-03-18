@@ -4,12 +4,10 @@ let {
   getNewXPostionFromLetter,
   getDiagonalMoves,
   isWithinBoardParameter
-} = require('../js/PositionMovement')
+} = require('../cli/PositionMovement')
 let assert = require('chai').assert
-let ChessBoard = require('../js/board.js');
 
 describe('PositionMovement', function() {
-  let board = new ChessBoard
 
   describe('#getHorizontalAndVerticalMoves', function() {
     it('should return the next positions directly next to the current postition, horizontally and vertically', function() {

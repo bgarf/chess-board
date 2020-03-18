@@ -9,7 +9,9 @@ const {
   getPossibleQueenMoves
 } = require('./Pieces')
 
-let {colours, pieces} = require('./enum')
+const { getPiece } = require('./utils')
+const {colours, pieces} = require('./enum')
+
 let x
 let y
 let colourToMove = colours.BLACK
@@ -51,29 +53,20 @@ function initialiseBoard() {
   ]
 }
 
-function getPiece(board, x, y) {
-  let piece = board.filter(piece => piece.x == x && piece.y == y)
-  if (piece.length > 1) {
-    throw new Error(`More than one piece exists in position ${x}${y}`)
-  } else { 
-    return piece[0]
-  }
-}
-
-function getValidMoves(piece) {
+function getValidMoves(piece, board) {
   switch (piece.type) {
     case pieces.PAWN:
       return getPossiblePawnMoves(piece.x, piece.y, piece.colour)
     case pieces.KNIGHT:
-      return getPossibleKnightMoves(piece.x, piece.y)
+      return getPossibleKnightMoves(piece, board)
     case pieces.BISHOP:
-      return getPossibleBishopMoves(piece.x, piece.y)
+      return getPossibleBishopMoves(piece, board)
     case pieces.ROOK:
-      return getPossibleRookMoves(piece.x, piece.y)
+      return getPossibleRookMoves(piece, board)
     case pieces.QUEEN:
-      return getPossibleQueenMoves(piece.x, piece.y)
+      return getPossibleQueenMoves(piece, board)
     case pieces.KING:
-      return getPossibleKingMoves(piece.x, piece.y)
+      return getPossibleKingMoves(piece, board)
   }
 }
 
@@ -97,13 +90,23 @@ function findAndMoveNextPiece(board) {
     .catch(
       error => {
         console.log(`\nA piece doesn't exist in position ${x}${y}. Try Again!\n`)
-        console.log(error.message)
+        console.log(error)
       }
     )
   }
   
 function chooseNextPositionAndMove(piece, board) {
-  let possibleMoves = getValidMoves(piece).map(piece => `${piece[0]}${piece[1]}`)
+  let possibleMoves = getValidMoves(piece, board).map(piece => `${piece[0]}${piece[1]}`)
+
+  if (possibleMoves.length > 0 ) {
+    selectPieceToMove(possibleMoves, piece, board)
+  } else {
+    console.log(`\n ${piece.type} has no available moves. Try Again \n`)
+    findAndMoveNextPiece(board)
+  }
+}
+
+function selectPieceToMove(possibleMoves, piece, board) {
   inquirer
     .prompt(
       {
@@ -172,4 +175,4 @@ function runner() {
 
 runner()
 
-module.exports = colours 
+module.exports = { initialiseBoard }

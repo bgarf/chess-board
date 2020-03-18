@@ -1,71 +1,65 @@
+const { getPiece } = require('./utils')
+
 const letterToNumberMapping = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8}
 const numberToLetterMapping = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H'}
 
-function getHorizontalAndVerticalMoves(x, y, distance) {
-  return getAxisMovesByDirection(x, y, distance, 'north')
-    .concat(getAxisMovesByDirection(x, y, distance, 'south'))
-    .concat(getAxisMovesByDirection(x, y, distance, 'east'))
-    .concat(getAxisMovesByDirection(x, y, distance, 'west'))
+function getHorizontalAndVerticalMoves(piece, distance, board) {
+  return getAxisMovesByDirection(piece, distance, 'north', board)
+    .concat(getAxisMovesByDirection(piece, distance, 'south', board))
+    .concat(getAxisMovesByDirection(piece, distance, 'east', board))
+    .concat(getAxisMovesByDirection(piece, distance, 'west', board))
+}
+function getDiagonalMoves(piece, distance, board) {
+  return getAxisMovesByDirection(piece, distance, 'northEast', board)
+    .concat(getAxisMovesByDirection(piece, distance, 'southEast', board))
+    .concat(getAxisMovesByDirection(piece, distance, 'northWest', board))
+    .concat(getAxisMovesByDirection(piece, distance, 'southWest', board))
 }
 
-function getDiagonalMoves(x, y, distance) {
-  return getDiagonalMovesByDirection(x, y, distance, 'northEast')
-  .concat(getDiagonalMovesByDirection(x, y, distance, 'southEast'))
-  .concat(getDiagonalMovesByDirection(x, y, distance, 'northWest'))
-  .concat(getDiagonalMovesByDirection(x, y, distance, 'southWest'))
-}
-
-function getDiagonalMovesByDirection(x, y, distance, direction) {
+function getAxisMovesByDirection(piece, distance, direction, board) {
   let avaiableMoves = []
-  for (let i = 1; i <= distance; i++) {
-    let newX = x
-    let newY = y
-    switch (direction) {
-      case 'northEast':
-        newY = y+i; newX = getNewXPostionFromLetter(x, i);
-        break;
-      case 'southEast':
-        newY = y-i; newX = getNewXPostionFromLetter(x, i);
-        break;
-      case 'northWest':
-        newY = y+i; newX = getNewXPostionFromLetter(x, -i);
-        break;
-      case 'southWest':
-        newY = y-i; newX = getNewXPostionFromLetter(x, -i);
-        break;
-      default:
-        console.log('No direction provided');
-        // TODO: should be exception!!!
-        break;
-    }
-    isWithinBoardParameter(newX, newY) ? avaiableMoves.push([newX, newY]) : null
-  }
-  return avaiableMoves
-}
 
-function getAxisMovesByDirection(x, y, distance, direction) {
-  let avaiableMoves = []
   for (let i = 1; i <= distance; i++) {
-    let newX = x
-    let newY = y
+    let newX = piece.x 
+    let newY = piece.y
     switch (direction) {
       case 'north':
-        newY = y+i;
+        newY = piece.y+i;
         break;
       case 'south':
-        newY = y-i;
+        newY = piece.y-i;
         break;
       case 'west':
-        newX = getNewXPostionFromLetter(x, -i);
+        newX = getNewXPostionFromLetter(piece.x, -i);
         break;
       case 'east':
-        newX = getNewXPostionFromLetter(x, i);
+        newX = getNewXPostionFromLetter(piece.x, i);
+        break;
+      case 'northEast':
+        newY = piece.y+i; newX = getNewXPostionFromLetter(piece.x, i);
+        break;
+      case 'southEast':
+        newY = piece.y-i; newX = getNewXPostionFromLetter(piece.x, i);
+        break;
+      case 'northWest':
+        newY = piece.y+i; newX = getNewXPostionFromLetter(piece.x, -i);
+        break;
+      case 'southWest':
+        newY = piece.y-i; newX = getNewXPostionFromLetter(piece.x, -i);
         break;
       default:
-      // TODO: should be exception!!!
-        break;
+        throw new Error('No direction passed to axis move selector')
     }
-    isWithinBoardParameter(newX, newY) ? avaiableMoves.push([newX, newY]) : null
+    
+    existingPiece = getPiece(board, newX, newY)
+    if (isWithinBoardParameter(newX, newY)) {
+        if (!existingPiece) {
+          avaiableMoves.push([newX, newY])
+        } else {
+            existingPiece.colour !== piece.colour ? avaiableMoves.push([newX, newY]) : null
+            break
+        }
+    }
   }
   return avaiableMoves
 }
@@ -81,9 +75,8 @@ function isWithinBoardParameter(x, y) {
 }
 
 module.exports = {
-  getHorizontalAndVerticalMoves,
-  getAxisMovesByDirection,
   getNewXPostionFromLetter,
+  getHorizontalAndVerticalMoves,
   getDiagonalMoves,
   isWithinBoardParameter
 }

@@ -1,26 +1,31 @@
 let {
-  getHorizontalAndVerticalMoves,
   getNewXPostionFromLetter,
+  getHorizontalAndVerticalMoves,
   getDiagonalMoves,
   isWithinBoardParameter
 } = require('./PositionMovement')
 
-let {colours} = require('./enum')
+const {colours} = require('./enum')
+const { getPiece } = require('./utils')
 
-function getPossibleKingMoves(x, y) {
-  return getDiagonalMoves(x, y, 1).concat(getHorizontalAndVerticalMoves(x, y, 1))
+function getPossibleKingMoves(piece, board) {
+  return getDiagonalMoves(piece, 1, board)
+            .concat(getHorizontalAndVerticalMoves(piece, 1, board))
 }
 
-function getPossibleBishopMoves(x, y) {
-  return getDiagonalMoves(x, y, 8)
+function getPossibleBishopMoves(piece, board) {
+  let m = getDiagonalMoves(piece, 8, board)
+  console.log(m)
+  return m
 }
 
-function getPossibleRookMoves(x, y) {
-  return getHorizontalAndVerticalMoves(x, y, 8)
+function getPossibleRookMoves(piece, board) {
+  return getHorizontalAndVerticalMoves(piece, 8, board)
 }
 
-function getPossibleQueenMoves(x, y) {
-  return getDiagonalMoves(x, y, 8).concat(getHorizontalAndVerticalMoves(x, y, 8))
+function getPossibleQueenMoves(piece, board) {
+  return getDiagonalMoves(piece, 8, board)
+            .concat(getHorizontalAndVerticalMoves(piece, 8, board))
 }
 
 function getPossiblePawnMoves(x, y, colour) {
@@ -38,7 +43,7 @@ function getPossiblePawnMoves(x, y, colour) {
 function getPawnMoves(x, y, one, two) {
   let oneForward = y + one
   console.log(oneForward)
-  if (y == two) {
+  if (y == 2 || y == 7) {
     return [[x, oneForward], [x, y + two]]
   } else if (isWithinBoardParameter(x, oneForward)) {
     return [[x, oneForward]]
@@ -47,12 +52,17 @@ function getPawnMoves(x, y, one, two) {
   }
 }
 
-function getPossibleKnightMoves(x, y) {
+function getPossibleKnightMoves(piece, board) {
   let allMoveCombinations = [[-1, 2], [1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1]]
 
   return allMoveCombinations.map(function(coords) {
-    return [getNewXPostionFromLetter(x, coords[0]), y + coords[1]]
-  }).filter(coords => isWithinBoardParameter(coords[0], coords[1]))
+    return [getNewXPostionFromLetter(piece.x, coords[0]), piece.y + coords[1]]
+  })
+  .filter(
+    coords => 
+      isWithinBoardParameter(coords[0], coords[1]) 
+      && (!getPiece(board, coords[0], coords[1]) || getPiece(board, coords[0], coords[1]).colour !== piece.colour) 
+  )
 }
 
 module.exports = {

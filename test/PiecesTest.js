@@ -6,7 +6,7 @@ let {
   getPossibleBishopMoves,
   getPossibleRookMoves,
   getPossibleQueenMoves
-} = require('../js/Pieces')
+} = require('../cli/Pieces')
 
 describe('Pieces', function() {
 
