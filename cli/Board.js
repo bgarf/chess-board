@@ -89,10 +89,8 @@ function findAndMoveNextPiece(board) {
     ])
     .then(
       answers => {
-        console.log(answers)
         let piecePosition = answers.chosenPiece.split(/\s\w:\s|,\s\w:\s/)
         let piece = getPiece(board, piecePosition[1], Number(piecePosition[2]))
-        console.log(`\nYou've chosen the ${piece.type} at that position: ${piece.x}${piece.y}\n`)
         movePiece(piece, board)
       }
     )
