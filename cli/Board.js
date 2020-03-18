@@ -118,17 +118,19 @@ function chooseNextPositionAndMove(piece, board) {
         let existingPiece = getPiece(board, nextPosition[0], Number(nextPosition[1]))
         
         if (existingPiece) {
-          board = takePiece(existingPiece, board)
+          if (existingPiece.colour === colourToMove) {
+            console.log("\n You're bound to lose if you take you're own pieces! \n Try another piece \n")
+            findAndMoveNextPiece(board)
+          } 
+          else {
+            board = takePiece(existingPiece, board)
+            movePiece(piece, board, nextPosition)
+            playNextTurnOrFinishGame(board)
+          }
+        } 
+        else {
           movePiece(piece, board, nextPosition)
-        } else {
-          movePiece(piece, board, nextPosition)
-        }
-
-        if (!isCheckMate(board)) {
-          colourToMove === colours.BLACK ? colourToMove = colours.WHITE : colourToMove = colours.BLACK
-          findAndMoveNextPiece(board)
-        } else {
-          console.log('Congratulations you win!')
+          playNextTurnOrFinishGame(board)
         }
       }
     )
@@ -147,6 +149,15 @@ function movePiece(piece, board, nextPosition) {
 
 function takePiece(existingPiece, board) {
   return board.filter(piece => piece != existingPiece)
+}
+
+function playNextTurnOrFinishGame(board) {
+  if (!isCheckMate(board)) {
+    colourToMove === colours.BLACK ? colourToMove = colours.WHITE : colourToMove = colours.BLACK
+    findAndMoveNextPiece(board)
+  } else {
+    console.log('Congratulations you win!')
+  }
 }
 
 function isCheckMate(board) {
