@@ -53,10 +53,10 @@ function initialiseBoard() {
 
 function getPiece(board, x, y) {
   let piece = board.filter(piece => piece.x == x && piece.y == y)
-  if (piece.length == 1) {
-    return piece[0]
+  if (piece.length > 1) {
+    throw new Error(`More than one piece exists in position ${x}${y}`)
   } else { 
-    throw new Error("Two pieces exist in the same place")
+    return piece[0]
   }
 }
 
@@ -91,7 +91,7 @@ function findAndMoveNextPiece(board) {
       answers => {
         let piecePosition = answers.chosenPiece.split(/\s\w:\s|,\s\w:\s/)
         let piece = getPiece(board, piecePosition[1], Number(piecePosition[2]))
-        movePiece(piece, board)
+        chooseNextPositionAndMove(piece, board)
       }
     )
     .catch(
@@ -102,9 +102,9 @@ function findAndMoveNextPiece(board) {
     )
   }
   
-  function movePiece(piece, board) {
-    let possibleMoves = getValidMoves(piece).map(piece => `${piece[0]} ${piece[1]}`)
-    inquirer
+function chooseNextPositionAndMove(piece, board) {
+  let possibleMoves = getValidMoves(piece).map(piece => `${piece[0]}${piece[1]}`)
+  inquirer
     .prompt(
       {
         type: 'list', name: 'move',
@@ -114,20 +114,39 @@ function findAndMoveNextPiece(board) {
     )
     .then(
       answers => {
-        let nextPosition = answers.move.split(' ')
-        let pieceIndex = board.indexOf(piece)
-        board[pieceIndex].x = nextPosition[0]
-        board[pieceIndex].y = Number(nextPosition[1])
+        let nextPosition = answers.move.split('')
+        let existingPiece = getPiece(board, nextPosition[0], Number(nextPosition[1]))
         
+        if (existingPiece) {
+          board = takePiece(existingPiece, board)
+          movePiece(piece, board, nextPosition)
+        } else {
+          movePiece(piece, board, nextPosition)
+        }
+
         if (!isCheckMate(board)) {
+          colourToMove === colours.BLACK ? colourToMove = colours.WHITE : colourToMove = colours.BLACK
           findAndMoveNextPiece(board)
         } else {
           console.log('Congratulations you win!')
         }
       }
-    ).catch(error => {
-      console.log(error)
-  });
+    )
+    .catch(
+      error => {
+        console.log(error)
+      }
+    );
+}
+
+function movePiece(piece, board, nextPosition) {
+  let pieceIndex = board.indexOf(piece)
+  board[pieceIndex].x = nextPosition[0]
+  board[pieceIndex].y = Number(nextPosition[1])
+}
+
+function takePiece(existingPiece, board) {
+  return board.filter(piece => piece != existingPiece)
 }
 
 function isCheckMate(board) {
