@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-
+const log = console.log
 const {
   getPossibleKingMoves,
   getPossiblePawnMoves,
@@ -9,8 +9,8 @@ const {
   getPossibleQueenMoves
 } = require('./Pieces')
 
-const { getPiece } = require('./utils')
-const {colours, pieces} = require('./enum')
+const { getPiece, getBoardVisualistion } = require('./utils')
+const { colours, pieces } = require('./enum')
 
 let x
 let y
@@ -73,8 +73,9 @@ function getValidMoves(piece, board) {
 }
 
 function findAndMoveNextPiece(board) {
-  let player = colourToMove === colours.BLACK ? [1, blackMoves] : [2, whiteMoves]
-  console.log(`------------ Player ${player[0]}: move ${player[1]} ---------------`)
+  let player = getPlayer()
+  log(`------------ Player ${player[0]}: move ${player[1]} ---------------`)
+  getBoardVisualistion(board)
   let playersPieces = board
                         .filter(piece => piece.colour === colourToMove)
                         .map(piece =>`${piece.type} x: ${piece.x}, y: ${piece.y}`)
@@ -93,8 +94,8 @@ function findAndMoveNextPiece(board) {
     )
     .catch(
       error => {
-        console.log(`\nA piece doesn't exist in position ${x}${y}. Try Again!\n`)
-        console.log(error)
+        log(`\nA piece doesn't exist in position ${x}${y}. Try Again!\n`)
+        log(error)
       }
     )
   }
@@ -105,7 +106,7 @@ function chooseNextPositionAndMove(piece, board) {
   if (possibleMoves.length > 0 ) {
     selectPieceToMove(possibleMoves, piece, board)
   } else {
-    console.log(`\n ${piece.type} has no available moves. Try Again \n`)
+    log(`\n ${piece.type} has no available moves. Try Again \n`)
     findAndMoveNextPiece(board)
   }
 }
@@ -126,7 +127,7 @@ function selectPieceToMove(possibleMoves, piece, board) {
         
         if (existingPiece) {
           if (existingPiece.colour === colourToMove) {
-            console.log("\n You're bound to lose if you take you're own pieces! \n Try another piece \n")
+            log("\n You're bound to lose if you take you're own pieces! \n Try another piece \n")
             findAndMoveNextPiece(board)
           } 
           else {
@@ -143,7 +144,7 @@ function selectPieceToMove(possibleMoves, piece, board) {
     )
     .catch(
       error => {
-        console.log(error)
+        log(error)
       }
     );
 }
@@ -163,8 +164,30 @@ function endPlayersTurn(board) {
     changePlayer()
     findAndMoveNextPiece(board)
   } else {
-    console.log('Congratulations you win!')
+    log(`----------- Congratulations player ${getPlayer()[0]} wins! -----------`)
+    resetGame()
   }
+}
+
+function resetGame() {
+  inquirer
+  .prompt(
+    {
+      type: 'confirm', name: 'reset',
+      message: `Would you like to play another game? `
+    }
+  )
+  .then(
+    answers => {
+      let reset = answers.reset
+      reset ? runner() : log('----------- Thanks for playing! -----------');
+    }
+  )
+  .catch(
+    error => {
+      log(error)
+    }
+  );
 }
 
 function changePlayer() {
@@ -175,6 +198,10 @@ function changePlayer() {
     colourToMove = colours.BLACK
     whiteMoves++
   }
+}
+
+function getPlayer() {
+  return colourToMove === colours.BLACK ? [1, blackMoves] : [2, whiteMoves]
 }
 
 function isCheckMate(board) {
