@@ -1,31 +1,31 @@
-let {
+const {
   getNewXPostionFromLetter,
-  getHorizontalAndVerticalMoves,
-  getDiagonalMoves,
+  getMoves,
   isWithinBoardParameter
 } = require('./PositionMovement')
 
 const {colours} = require('./enum')
 const { getPiece } = require('./utils')
 
+const axisDirections = ['north', 'south', 'east', 'west']
+const diagonalDirections = ['northEast', 'southEast', 'northWest', 'southWest']
+
 function getPossibleKingMoves(piece, board) {
-  return getDiagonalMoves(piece, 1, board)
-            .concat(getHorizontalAndVerticalMoves(piece, 1, board))
+  return getMoves(piece, 1, diagonalDirections, board)
+            .concat(getMoves(piece, 1, axisDirections, board))
 }
 
 function getPossibleBishopMoves(piece, board) {
-  let m = getDiagonalMoves(piece, 8, board)
-  console.log(m)
-  return m
+  return getMoves(piece, 8, diagonalDirections, board)
 }
 
 function getPossibleRookMoves(piece, board) {
-  return getHorizontalAndVerticalMoves(piece, 8, board)
+  return getMoves(piece, 8, axisDirections, board)
 }
 
 function getPossibleQueenMoves(piece, board) {
-  return getDiagonalMoves(piece, 8, board)
-            .concat(getHorizontalAndVerticalMoves(piece, 8, board))
+  return getMoves(piece, 8, diagonalDirections, board)
+            .concat(getMoves(piece, 8, axisDirections, board))
 }
 
 function getPossiblePawnMoves(x, y, colour) {
@@ -35,8 +35,7 @@ function getPossiblePawnMoves(x, y, colour) {
     case colours.WHITE: 
       return getPawnMoves(x, y, -1, -2)
     default:
-      console.log('No colour provided!')
-      //TODO: should be exception?
+      throw new Error('No pawn piece provided to the pawn move selector')
   } 
 }
 

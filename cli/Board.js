@@ -15,6 +15,8 @@ const {colours, pieces} = require('./enum')
 let x
 let y
 let colourToMove = colours.BLACK
+let blackMoves = 1
+let whiteMoves = 1
 
 function initialiseBoard() {
   return [
@@ -71,6 +73,8 @@ function getValidMoves(piece, board) {
 }
 
 function findAndMoveNextPiece(board) {
+  let player = colourToMove === colours.BLACK ? [1, blackMoves] : [2, whiteMoves]
+  console.log(`------------ Player ${player[0]}: move ${player[1]} ---------------`)
   let playersPieces = board
                         .filter(piece => piece.colour === colourToMove)
                         .map(piece =>`${piece.type} x: ${piece.x}, y: ${piece.y}`)
@@ -128,12 +132,12 @@ function selectPieceToMove(possibleMoves, piece, board) {
           else {
             board = takePiece(existingPiece, board)
             movePiece(piece, board, nextPosition)
-            playNextTurnOrFinishGame(board)
+            endPlayersTurn(board)
           }
         } 
         else {
           movePiece(piece, board, nextPosition)
-          playNextTurnOrFinishGame(board)
+          endPlayersTurn(board)
         }
       }
     )
@@ -154,12 +158,22 @@ function takePiece(existingPiece, board) {
   return board.filter(piece => piece != existingPiece)
 }
 
-function playNextTurnOrFinishGame(board) {
+function endPlayersTurn(board) {
   if (!isCheckMate(board)) {
-    colourToMove === colours.BLACK ? colourToMove = colours.WHITE : colourToMove = colours.BLACK
+    changePlayer()
     findAndMoveNextPiece(board)
   } else {
     console.log('Congratulations you win!')
+  }
+}
+
+function changePlayer() {
+  if (colourToMove === colours.BLACK) {
+    colourToMove = colours.WHITE
+    blackMoves++
+  } else {
+    colourToMove = colours.BLACK
+    whiteMoves++
   }
 }
 

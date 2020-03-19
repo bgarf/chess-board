@@ -3,20 +3,15 @@ const { getPiece } = require('./utils')
 const letterToNumberMapping = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8}
 const numberToLetterMapping = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H'}
 
-function getHorizontalAndVerticalMoves(piece, distance, board) {
-  return getAxisMovesByDirection(piece, distance, 'north', board)
-    .concat(getAxisMovesByDirection(piece, distance, 'south', board))
-    .concat(getAxisMovesByDirection(piece, distance, 'east', board))
-    .concat(getAxisMovesByDirection(piece, distance, 'west', board))
-}
-function getDiagonalMoves(piece, distance, board) {
-  return getAxisMovesByDirection(piece, distance, 'northEast', board)
-    .concat(getAxisMovesByDirection(piece, distance, 'southEast', board))
-    .concat(getAxisMovesByDirection(piece, distance, 'northWest', board))
-    .concat(getAxisMovesByDirection(piece, distance, 'southWest', board))
+function getMoves(piece, distance, directions, board) {
+  let moves = []
+  for (let i = 0; i < directions.length; i++) {
+    moves = moves.concat(getMovesByDirection(piece, distance, directions[i], board))
+  }
+  return moves
 }
 
-function getAxisMovesByDirection(piece, distance, direction, board) {
+function getMovesByDirection(piece, distance, direction, board) {
   let avaiableMoves = []
 
   for (let i = 1; i <= distance; i++) {
@@ -76,7 +71,6 @@ function isWithinBoardParameter(x, y) {
 
 module.exports = {
   getNewXPostionFromLetter,
-  getHorizontalAndVerticalMoves,
-  getDiagonalMoves,
+  getMoves,
   isWithinBoardParameter
 }
