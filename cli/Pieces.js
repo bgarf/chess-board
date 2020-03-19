@@ -1,9 +1,4 @@
-const {
-  getNewXPostionFromLetter,
-  getMoves,
-  isWithinBoardParameter
-} = require('./PositionMovement')
-
+const { getNewXPostionFromLetter, getMoves, isWithinBoardParameter } = require('./PositionMovement')
 const {colours} = require('./enum')
 const { getPiece } = require('./utils')
 
@@ -41,7 +36,6 @@ function getPossiblePawnMoves(x, y, colour) {
 
 function getPawnMoves(x, y, one, two) {
   let oneForward = y + one
-  console.log(oneForward)
   if (y == 2 || y == 7) {
     return [[x, oneForward], [x, y + two]]
   } else if (isWithinBoardParameter(x, oneForward)) {
@@ -65,10 +59,6 @@ function getPossibleKnightMoves(piece, board) {
 }
 
 module.exports = {
-  getPossibleKingMoves,
-  getPossiblePawnMoves,
-  getPossibleKnightMoves,
-  getPossibleBishopMoves,
-  getPossibleRookMoves,
-  getPossibleQueenMoves
+  getPossibleKingMoves, getPossiblePawnMoves, getPossibleKnightMoves,
+  getPossibleBishopMoves, getPossibleRookMoves, getPossibleQueenMoves 
 }

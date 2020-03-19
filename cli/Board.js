@@ -1,16 +1,10 @@
 const inquirer = require('inquirer');
-const log = console.log
-const {
-  getPossibleKingMoves,
-  getPossiblePawnMoves,
-  getPossibleKnightMoves,
-  getPossibleBishopMoves,
-  getPossibleRookMoves,
-  getPossibleQueenMoves
-} = require('./Pieces')
-
+const chalk = require('chalk');
+const { getPossibleKingMoves, getPossiblePawnMoves, getPossibleKnightMoves,
+   getPossibleBishopMoves, getPossibleRookMoves, getPossibleQueenMoves } = require('./Pieces')
 const { getPiece, getBoardVisualistion } = require('./utils')
-const { colours, pieces } = require('./enum')
+const { colours, pieces} = require('./enum')
+const log = console.log
 
 let x
 let y
@@ -74,7 +68,7 @@ function getValidMoves(piece, board) {
 
 function findAndMoveNextPiece(board) {
   let player = getPlayer()
-  log(`------------ Player ${player[0]}: move ${player[1]} ---------------`)
+  log(chalk.yellowBright.bold(`\n--------------------------- Player ${player[0]}: move ${player[1]} ---------------------------\n`))
   getBoardVisualistion(board)
   let playersPieces = board
                         .filter(piece => piece.colour === colourToMove)
@@ -82,7 +76,7 @@ function findAndMoveNextPiece(board) {
   inquirer
     .prompt([
       {
-        type: 'list', name: 'chosenPiece', message: 'Which piece would you like to move? ', choices: playersPieces 
+        type: 'list', name: 'chosenPiece', message: '\n Which piece would you like to move? ', choices: playersPieces 
       }
     ])
     .then(
@@ -106,7 +100,7 @@ function chooseNextPositionAndMove(piece, board) {
   if (possibleMoves.length > 0 ) {
     selectPieceToMove(possibleMoves, piece, board)
   } else {
-    log(`\n ${piece.type} has no available moves. Try Again \n`)
+    log(chalk.rgb(255, 0, 8).bold(`\n ${piece.type} has no available moves. Try Again \n`))
     findAndMoveNextPiece(board)
   }
 }
@@ -127,7 +121,7 @@ function selectPieceToMove(possibleMoves, piece, board) {
         
         if (existingPiece) {
           if (existingPiece.colour === colourToMove) {
-            log("\n You're bound to lose if you take you're own pieces! \n Try another piece \n")
+            log(chalk.rgb(255, 0, 8).bold("\n You're bound to lose if you take you're own pieces! \n Try another piece \n"))
             findAndMoveNextPiece(board)
           } 
           else {
@@ -164,7 +158,7 @@ function endPlayersTurn(board) {
     changePlayer()
     findAndMoveNextPiece(board)
   } else {
-    log(`----------- Congratulations player ${getPlayer()[0]} wins! -----------`)
+    log(chalk.rgb(255, 0, 230).bold(`\n-------------------- Congratulations player ${getPlayer()[0]} wins! --------------------\n`))
     resetGame()
   }
 }
@@ -180,7 +174,7 @@ function resetGame() {
   .then(
     answers => {
       let reset = answers.reset
-      reset ? runner() : log('----------- Thanks for playing! -----------');
+      reset ? runner() : log(chalk.rgb(252, 215, 3).bold('\n------------------------- Thanks for playing! --------------------------\n'))
     }
   )
   .catch(

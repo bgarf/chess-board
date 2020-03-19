@@ -10,25 +10,11 @@ function getPiece(board, x, y) {
     }
 }
 
-const colours = {
-    WHITE: 'white',
-    BLACK: 'black'
-  }
-
-const pieces = {
-    PAWN: 'pawn',
-    KNIGHT: 'knight',
-    ROOK: 'rook',
-    BISHOP: 'bishop',
-    QUEEN: 'queen',
-    KING: 'king'
-  }
-
 function getBoardVisualistion(board) {
     let fullBoardArray = []
     // i = y axis & j = x axis 
-    for (let i = 9; i > 0 ; i--) {
-        let row = '  '
+    for (let i = 8; i > 0 ; i--) {
+        let row = '                '
         for (let j = 1; j <= 8; j++) {
             let piece = getPiece(board, numberToLetterMapping[j], i)           
             piece ? row+=(`[ ${piece.type.charAt(0)} ]`) : row+='[   ]'
