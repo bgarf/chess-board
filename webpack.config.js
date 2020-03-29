@@ -5,7 +5,7 @@ const port = 3000;
 
 module.exports = {
   mode: 'development',  
-  entry: './app/index.js',
+  entry: './app/src/index.js',
   output: {
     filename: 'bundle.[hash].js'
   },
@@ -37,7 +37,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'public/index.html'
+      template: 'app/public/index.html'
     //   favicon: 'public/favicon.ico'
     })
   ],

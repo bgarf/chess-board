@@ -4,7 +4,9 @@
   "description": "",
   "main": "app/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "webpack-dev-server",
+    "create": "webpack"
   },
   "keywords": [],
   "author": "",

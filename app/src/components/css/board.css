@@ -1,10 +1,4 @@
-body {
-    margin: 0;
-    background-color:rgb(80, 106, 148);
-    color: black;
-}
-
-#root {
+.container {
     width: 600px;
     height: 600px;
     margin: 5% auto;
@@ -20,7 +14,7 @@ body {
     font-size: 50px;
     width: 560px;
     height: 560px;
-    box-shadow: 0px 0px 3px 2px rgb(11, 35, 140);
+    box-shadow: 0px 0px 24px 2px rgb(11, 35, 140);
 }
 
 .square {
@@ -50,8 +44,3 @@ body {
 #board div:nth-child(56) ~ div:nth-child(-2n+64) {
     background-color: white;
 }
-
-.A.y1 {
-    background-color: yellow
-}
-
