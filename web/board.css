@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    background-color:rgb(80, 106, 148);
+    color: black;
+}
+
+#outer-perimeter {
+    width: 600px;
+    height: 600px;
+    margin: 5% auto;
+    background-color: #325bff;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 0.5px black;
+}
+
+#board {
+    text-align: center;
+    margin: 20px;
+    font-size: 50px;
+    width: 560px;
+    height: 560px;
+    box-shadow: 0px 0px 3px 2px rgb(11, 35, 140);
+}
+
+.square {
+    width: 69.8px;
+    height: 69.8px;
+    float: left;
+    border: 0.1px solid black;
+}
+
+#board div:nth-child(-2n+8), 
+#board div:nth-child(8) ~ div:nth-child(-2n+15), 
+#board div:nth-child(16) ~ div:nth-child(-2n+24), 
+#board div:nth-child(24) ~ div:nth-child(-2n+31), 
+#board div:nth-child(32) ~ div:nth-child(-2n+40), 
+#board div:nth-child(40) ~ div:nth-child(-2n+47), 
+#board div:nth-child(48) ~ div:nth-child(-2n+56), 
+#board div:nth-child(56) ~ div:nth-child(-2n+63) {
+    background-color: rgb(102, 160, 204);
+}
+#board div:nth-child(-2n+7), 
+#board div:nth-child(8) ~ div:nth-child(-2n+16), 
+#board div:nth-child(16) ~ div:nth-child(-2n+23), 
+#board div:nth-child(24) ~ div:nth-child(-2n+32), 
+#board div:nth-child(32) ~ div:nth-child(-2n+39), 
+#board div:nth-child(40) ~ div:nth-child(-2n+48), 
+#board div:nth-child(48) ~ div:nth-child(-2n+55), 
+#board div:nth-child(56) ~ div:nth-child(-2n+64) {
+    background-color: white;
+}
+
+.A.y1 {
+    background-color: yellow
+}
+
