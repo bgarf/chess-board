@@ -1,4 +1,4 @@
-.container {
+.board-outer-border {
     width: 600px;
     height: 600px;
     margin: 5% auto;
@@ -10,7 +10,7 @@
 
 #board {
     text-align: center;
-    margin: 20px;
+    margin: 20.5px;
     font-size: 50px;
     width: 560px;
     height: 560px;
