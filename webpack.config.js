@@ -5,11 +5,13 @@ const port = 3000;
 
 module.exports = {
   mode: 'development',  
-  entry: './app/src/index.js',
+  entry: {
+    'app': './app/src/index.js'
+  },
   output: {
     filename: 'bundle.[hash].js'
   },
-//   devtool: 'inline-source-map',
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
