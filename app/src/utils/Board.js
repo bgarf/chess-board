@@ -1,3 +1,19 @@
+const colours = {
+  WHITE: 'white',
+  BLACK: 'black'
+}
+
+const pieces = {
+  PAWN: 'pawn',
+  KNIGHT: 'knight',
+  ROOK: 'rook',
+  BISHOP: 'bishop',
+  QUEEN: 'queen',
+  KING: 'king'
+}
+
+const numberToLetterMapping = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H'}
+
 export function initialiseBoard() {
     return [
       {x: 'A', y: 1, type: pieces.ROOK, colour: colours.BLACK}, 
@@ -35,16 +51,23 @@ export function initialiseBoard() {
     ]
 }
 
-export const colours = {
-  WHITE: 'white',
-  BLACK: 'black'
+function getPiece(board, x, y) {
+    let piece = board.filter(piece => piece.x == x && piece.y == y)
+    if (piece.length > 1) {
+      throw new Error(`More than one piece exists in position ${x}${y}`)
+    } else { 
+      return piece[0]
+    }
 }
 
-export const pieces = {
-  PAWN: 'pawn',
-  KNIGHT: 'knight',
-  ROOK: 'rook',
-  BISHOP: 'bishop',
-  QUEEN: 'queen',
-  KING: 'king'
+export function getSquareArray(board) {
+    let fullBoardArray = []
+    // i = y axis & j = x axis 
+    for (let i = 1; i <= 8 ; i++) {
+        for (let j = 1; j <= 8; j++) {
+            let piece = getPiece(board, numberToLetterMapping[j], i) 
+            piece ? fullBoardArray.push(piece) : fullBoardArray.push('')
+        }
+    }
+    return fullBoardArray
 }
