@@ -9,7 +9,7 @@ class Square extends React.Component {
     }
 
     render () {
-        return <div className={this.state.class1}/>
+        return <div id={this.props.id} className={this.state.class1}/>
     }
 } 
 
