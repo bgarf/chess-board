@@ -1,5 +1,5 @@
-import React, { Children } from 'react'
-import {square, clicked} from './css/board.css'
+import React from 'react'
+import {square} from './css/board.css'
 class Square extends React.Component {
     constructor(props) {
         super(props)
@@ -9,7 +9,7 @@ class Square extends React.Component {
     }
 
     render () {
-        return <div id={this.props.id} className={this.state.class1}/>
+        return <div className={this.state.class1} onClick={this.props.onClick}/>
     }
 } 
 
