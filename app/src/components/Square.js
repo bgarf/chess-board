@@ -6,10 +6,24 @@ class Square extends React.Component {
         super(props)
     }
 
+    renderAvailableHighlight() {
+        return <div style={{
+            margin: '25%',
+            width: '50%',
+            height: '50%',
+            borderRadius: '50%',
+            backgroundColor: 'rgb(255, 0, 234)'
+        }}/>
+    }
+
     render () {
         console.log('rendering square')
         const classX = `${square} ${this.props.className}`
-        return <div className={classX} onClick={this.props.onClick} style={this.props.style}/>
+        return <div 
+            className={classX} 
+            onClick={this.props.onClick} 
+            style={this.props.style}>{this.props.children ? this.renderAvailableHighlight() : ''}
+            </div>
     }
 } 
 

@@ -14,6 +14,7 @@ class Board extends React.Component {
                         className={`${value ? value.pieceStyle : ''}`}
                         style={value.style}
                         onClick={() => this.props.onClick(value)}
+                        children={value.available ? true : false}
                     />
         })
     }
