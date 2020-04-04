@@ -12,7 +12,10 @@ class App extends React.Component {
             board: initialisePieces(),
             selected: null,
             available: [],
-            message: ''
+            message: '',
+            turn: 'white',
+            whiteTakenPiece: [],
+            blackTakenPiece: []
         }
         this.clickHandler = this.clickHandler.bind(this)
         this.highlightMoves = this.highlightMoves.bind(this)
@@ -22,39 +25,46 @@ class App extends React.Component {
     clickHandler(piece) {
         let board = this.state.board.slice()
 
-        if (!this.state.selected && piece.type) {
-            console.log(1)
-            this.highlightMoves(piece, board)
-        } else if (this.state.selected && !this.state.available.includes(piece) && piece.type) {
-            console.log(2)
-            this.unhighlightSelected(board)
-            this.highlightMoves(piece, board)            
-        } else if (this.state.selected && !this.state.available.includes(piece) && !piece.type) {
-            console.log(3)
-            this.unhighlightSelected(board)
-        } else if (this.state.selected && this.state.available.includes(piece)) {
-            const pieceSelected = this.state.selected
-            this.unhighlightSelected(board)
-            // changing piece 
-            const newPieceIndex = board.indexOf(piece)
-            board[newPieceIndex].type = pieceSelected.type
-            board[newPieceIndex].colour = pieceSelected.colour
-            board[newPieceIndex].pieceStyle = pieceSelected.pieceStyle
-            
-            const oldPieceIndex = board.indexOf(pieceSelected)
-            board[oldPieceIndex].type = null
-            board[oldPieceIndex].colour = null
-            board[oldPieceIndex].pieceStyle = null
-
-            this.setState({
-                board: board,
-                selected: null
-            })
+        if (piece.colour === this.state.turn || !piece.type) {
+            if (!this.state.selected && piece.type) {
+                console.log(1)
+                this.highlightMoves(piece, board)
+            } else if (this.state.selected && !this.state.available.includes(piece) && piece.type) {
+                console.log(2)
+                this.unhighlightSelected(board)
+                this.highlightMoves(piece, board)            
+            } else if (this.state.selected && !this.state.available.includes(piece) && !piece.type) {
+                console.log(3)
+                this.unhighlightSelected(board)
+            } else if (this.state.selected && this.state.available.includes(piece)) {
+                const pieceSelected = this.state.selected
+                this.unhighlightSelected(board)
+                
+                board = this.changeSquare(piece, board, pieceSelected)
+                board = this.changeSquare(pieceSelected, board)
+                
+                this.setState({
+                    board: board,
+                    selected: null,
+                    turn: this.state.turn === 'white' ? 'black' : 'white'
+                })
+            } else {
+                this.setState({
+                    message: 'Please select a move'
+                })
+            }
         } else {
-            this.setState({
-                message: 'Please select a move'
-            })
+            console.log('hey!')
+            this.setState({message: 'Pick a piece of your own colour!'})
         }
+    }
+
+    changeSquare(piece, board, previousPiece = null) {
+        const oldPieceIndex = board.indexOf(piece)
+        board[oldPieceIndex].type = previousPiece ? previousPiece.type : null
+        board[oldPieceIndex].colour = previousPiece ? previousPiece.colour : null
+        board[oldPieceIndex].pieceStyle = previousPiece ? previousPiece.pieceStyle : null
+        return board
     }
 
     highlightMoves(piece, board) {
