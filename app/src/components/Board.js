@@ -1,19 +1,6 @@
 import React from 'react'
 import Square from './Square'
 import { boardOuterBorder, boardInnerBorder } from './css/board.css'
-const { initialiseBoard, getSquareArray } = require('../utils/Board.js')
-
-import { blackKing, blackQueen, blackBishop, blackKnight, blackRook, blackPawn, whiteKing, whiteQueen, whiteBishop, whiteKnight, whiteRook, whitePawn } from './css/pieces.css'
-
-const styleMapping = { 
-    'black-king': blackKing, 'black-queen': blackQueen, 'black-bishop': blackBishop, 'black-knight': blackKnight,
-    'black-rook': blackRook, 'black-pawn': blackPawn, 'white-king': whiteKing, 'white-queen': whiteQueen,
-    'white-bishop': whiteBishop, 'white-knight': whiteKnight, 'white-rook': whiteRook, 'white-pawn': whitePawn
-}
-
-const createSquares = [ ...Array(64) ].map((value, index) => {
-    return <Square key={index} className={value}/>
-})
 
 class Board extends React.Component {
     constructor(props) {
@@ -21,12 +8,12 @@ class Board extends React.Component {
     }
 
     getSquares(currentState) {
-        return getSquareArray(currentState).map((value, index) => {
-            const pieceStyleClass = styleMapping[`${value.colour}-${value.type}`]
+        return currentState.map((value, index) => {
             return <Square 
                         key={index}
-                        className={`${pieceStyleClass}`}
-                        onClick={this.props.onClick(index)}
+                        className={`${value ? value.style : ''}`}
+                        style={value.style}
+                        onClick={() => this.props.onClick(value)}
                     />
         })
     }
