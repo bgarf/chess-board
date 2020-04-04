@@ -1,6 +1,8 @@
 import { blackKing, blackQueen, blackBishop, blackKnight, blackRook, blackPawn, whiteKing, whiteQueen, whiteBishop, whiteKnight, whiteRook, whitePawn } from '../components/css/pieces.css'
+import { getPossibleKingMoves, getPossiblePawnMoves, getPossibleKnightMoves,
+  getPossibleBishopMoves, getPossibleRookMoves, getPossibleQueenMoves } from './Pieces'
 
-const colours = {
+export const colours = {
   WHITE: 'white',
   BLACK: 'black'
 }
@@ -14,7 +16,7 @@ const pieces = {
   KING: 'king'
 }
 
-const numberToLetterMapping = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H'}
+// const numberToLetterMapping = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H'}
 
 export function initialisePieces() {
     return [
@@ -34,16 +36,10 @@ export function initialisePieces() {
       {x: 'F', y: 2, type: pieces.PAWN, colour: colours.BLACK, pieceStyle: blackPawn}, 
       {x: 'G', y: 2, type: pieces.PAWN, colour: colours.BLACK, pieceStyle: blackPawn}, 
       {x: 'H', y: 2, type: pieces.PAWN, colour: colours.BLACK, pieceStyle: blackPawn}, 
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, 
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},  
-      {x: 'A', y: 8, type: pieces.ROOK, colour: colours.WHITE, pieceStyle: whiteRook}, 
-      {x: 'B', y: 8, type: pieces.KNIGHT, colour: colours.WHITE, pieceStyle: whiteKnight}, 
-      {x: 'C', y: 8, type: pieces.BISHOP, colour: colours.WHITE, pieceStyle: whiteBishop}, 
-      {x: 'D', y: 8, type: pieces.QUEEN, colour: colours.WHITE, pieceStyle: whiteQueen}, 
-      {x: 'E', y: 8, type: pieces.KING, colour: colours.WHITE, pieceStyle: whiteKing}, 
-      {x: 'F', y: 8, type: pieces.BISHOP, colour: colours.WHITE, pieceStyle: whiteBishop}, 
-      {x: 'G', y: 8, type: pieces.KNIGHT, colour: colours.WHITE, pieceStyle: whiteKnight}, 
-      {x: 'H', y: 8, type: pieces.ROOK, colour: colours.WHITE, pieceStyle: whiteRook}, 
+      {x: 'A', y: 3}, {x: 'B', y: 3}, {x: 'C', y: 3}, {x: 'D', y: 3}, {x: 'E', y: 3}, {x: 'F', y: 3}, {x: 'G', y: 3}, {x: 'H', y: 3}, 
+      {x: 'A', y: 4}, {x: 'B', y: 4}, {x: 'C', y: 4}, {x: 'D', y: 4}, {x: 'E', y: 4}, {x: 'F', y: 4}, {x: 'G', y: 4}, {x: 'H', y: 4}, 
+      {x: 'A', y: 5}, {x: 'B', y: 5}, {x: 'C', y: 5}, {x: 'D', y: 5}, {x: 'E', y: 5}, {x: 'F', y: 5}, {x: 'G', y: 5}, {x: 'H', y: 5}, 
+      {x: 'A', y: 6}, {x: 'B', y: 6}, {x: 'C', y: 6}, {x: 'D', y: 6}, {x: 'E', y: 6}, {x: 'F', y: 6}, {x: 'G', y: 6}, {x: 'H', y: 6}, 
       {x: 'A', y: 7, type: pieces.PAWN, colour: colours.WHITE, pieceStyle: whitePawn}, 
       {x: 'B', y: 7, type: pieces.PAWN, colour: colours.WHITE, pieceStyle: whitePawn}, 
       {x: 'C', y: 7, type: pieces.PAWN, colour: colours.WHITE, pieceStyle: whitePawn}, 
@@ -51,11 +47,36 @@ export function initialisePieces() {
       {x: 'E', y: 7, type: pieces.PAWN, colour: colours.WHITE, pieceStyle: whitePawn}, 
       {x: 'F', y: 7, type: pieces.PAWN, colour: colours.WHITE, pieceStyle: whitePawn}, 
       {x: 'G', y: 7, type: pieces.PAWN, colour: colours.WHITE, pieceStyle: whitePawn}, 
-      {x: 'H', y: 7, type: pieces.PAWN, colour: colours.WHITE, pieceStyle: whitePawn}
+      {x: 'H', y: 7, type: pieces.PAWN, colour: colours.WHITE, pieceStyle: whitePawn},
+      {x: 'A', y: 8, type: pieces.ROOK, colour: colours.WHITE, pieceStyle: whiteRook}, 
+      {x: 'B', y: 8, type: pieces.KNIGHT, colour: colours.WHITE, pieceStyle: whiteKnight}, 
+      {x: 'C', y: 8, type: pieces.BISHOP, colour: colours.WHITE, pieceStyle: whiteBishop}, 
+      {x: 'D', y: 8, type: pieces.QUEEN, colour: colours.WHITE, pieceStyle: whiteQueen}, 
+      {x: 'E', y: 8, type: pieces.KING, colour: colours.WHITE, pieceStyle: whiteKing}, 
+      {x: 'F', y: 8, type: pieces.BISHOP, colour: colours.WHITE, pieceStyle: whiteBishop}, 
+      {x: 'G', y: 8, type: pieces.KNIGHT, colour: colours.WHITE, pieceStyle: whiteKnight}, 
+      {x: 'H', y: 8, type: pieces.ROOK, colour: colours.WHITE, pieceStyle: whiteRook}
     ]
 }
 
-function getPiece(board, x, y) {
+export function getValidMoves(piece, board) {
+  switch (piece.type) {
+    case pieces.PAWN:
+      return getPossiblePawnMoves(piece.x, piece.y, piece.colour)
+    case pieces.KNIGHT:
+      return getPossibleKnightMoves(piece, board)
+    case pieces.BISHOP:
+      return getPossibleBishopMoves(piece, board)
+    case pieces.ROOK:
+      return getPossibleRookMoves(piece, board)
+    case pieces.QUEEN:
+      return getPossibleQueenMoves(piece, board)
+    case pieces.KING:
+      return getPossibleKingMoves(piece, board)
+  }
+}
+
+export function getPiece(board, x, y) {
     let piece = board.filter(piece => piece.x == x && piece.y == y)
     if (piece.length > 1) {
       throw new Error(`More than one piece exists in position ${x}${y}`)
@@ -64,14 +85,14 @@ function getPiece(board, x, y) {
     }
 }
 
-export function getSquareArray(board) {
-    let fullBoardArray = []
-    // i = y axis & j = x axis 
-    for (let i = 1; i <= 8 ; i++) {
-        for (let j = 1; j <= 8; j++) {
-            let piece = getPiece(board, numberToLetterMapping[j], i) 
-            piece ? fullBoardArray.push(piece) : fullBoardArray.push('')
-        }
-    }
-    return fullBoardArray
-}
+// export function getSquareArray(board) {
+//     let fullBoardArray = []
+//     // i = y axis & j = x axis 
+//     for (let i = 1; i <= 8 ; i++) {
+//         for (let j = 1; j <= 8; j++) {
+//             let piece = getPiece(board, numberToLetterMapping[j], i) 
+//             piece ? fullBoardArray.push(piece) : fullBoardArray.push('')
+//         }
+//     }
+//     return fullBoardArray
+// }

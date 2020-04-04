@@ -1,7 +1,5 @@
 import React from 'react'
 import {square} from './css/board.css'
-const {blackKing} = require('../utils/PieceStyling.js')
-import blackKingImage from "../utils/images/black-king.svg"
 
 class Square extends React.Component {
     constructor(props) {
