@@ -11,7 +11,7 @@ class Board extends React.Component {
         return currentState.map((value, index) => {
             return <Square 
                         key={index}
-                        className={`${value ? value.style : ''}`}
+                        className={`${value ? value.pieceStyle : ''}`}
                         style={value.style}
                         onClick={() => this.props.onClick(value)}
                     />

@@ -16,9 +16,9 @@ class App extends React.Component {
     clickHandler(piece) {
         let board = this.state.board.slice()
         const pieceIndex = board.indexOf(piece)
-        board[pieceIndex].style = {...blackKing}
+        board[pieceIndex].pieceStyle =  ''
         this.setState({board: board})
-        console.log(piece)
+        console.log(board)
     }
 
     render() {
