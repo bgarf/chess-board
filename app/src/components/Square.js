@@ -12,7 +12,7 @@ class Square extends React.Component {
             width: '50%',
             height: '50%',
             borderRadius: '50%',
-            backgroundColor: 'rgb(255, 0, 234)'
+            backgroundColor: 'rgb(255, 201, 5)'
         }}/>
     }
 

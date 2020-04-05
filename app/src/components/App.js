@@ -50,7 +50,7 @@ class App extends React.Component {
                 })
             } else {
                 this.setState({
-                    message: 'Please select a move'
+                    message: 'Please select a piece to move'
                 })
             }
         } else if (piece.colour !== this.state.turn && this.state.available.includes(piece)) {
@@ -133,7 +133,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <div style={{fontFamily: "'Open Sans', sans-serif"}}>
+            <div>
                 { this.state.message ? <div className={ messageBanner } children={ this.state.message }/> : ''}
                 <div className="sidebar">
                     <Sidebar

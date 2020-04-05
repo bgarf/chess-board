@@ -1,5 +1,5 @@
 import React from 'react'
-import { sidebarOuter, sidebarInner, takenPieceArea, playersColour, playersName, white, black} from './css/board.css'
+import { sidebarOuter, sidebarInner, playerArea, playersColour, playersName, white, black, top} from './css/board.css'
 import { TakenPieceCollector } from './PlayerInfo'
 
 class Sidebar extends React.Component {
@@ -11,12 +11,17 @@ class Sidebar extends React.Component {
         return (
             <div id={ sidebarOuter }>
                 <div id={ sidebarInner }>
-                    <div className={playersName}><div className={`${playersColour} ${black}`} />Player 2 </div>
-                    <TakenPieceCollector children={this.props.takenWhite}/>
-                    <TakenPieceCollector children={this.props.takenBlack}/>
-                    <div className={playersName}><div className={`${playersColour} ${white}`} />Player 1</div>
+                    <div className={playerArea}>
+                        <div className={`${playersName} ${top}`}><div className={`${playersColour} ${black}`} />PLAYER 2 </div>
+                        <TakenPieceCollector children={this.props.takenWhite}/>
+                    </div>
+                    <div className={playerArea}>
+                        <TakenPieceCollector children={this.props.takenBlack}/>
+                        <div className={`${playersName}`}><div className={`${playersColour} ${white}`} />PLAYER 1</div>
+                    </div>
                 </div>
-            </div>)
+            </div>
+            )
     }
 }
 
