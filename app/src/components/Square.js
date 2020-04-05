@@ -18,9 +18,9 @@ class Square extends React.Component {
 
     render () {
         console.log('rendering square')
-        const classX = `${square} ${this.props.className}`
+        const combinedClasses = `${square} ${this.props.className}`
         return <div 
-            className={classX} 
+            className={combinedClasses} 
             onClick={this.props.onClick} 
             style={this.props.style}>{this.props.children ? this.renderAvailableHighlight() : ''}
             </div>

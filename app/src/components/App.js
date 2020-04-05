@@ -1,5 +1,6 @@
 import React from 'react'
 import Board from './Board'
+import Sidebar from './Sidebar'
 const { initialisePieces, getValidMoves, getPiece } = require('../utils/Board.js')
 
 const selected = {
@@ -27,14 +28,11 @@ class App extends React.Component {
 
         if (piece.colour === this.state.turn || !piece.type) {
             if (!this.state.selected && piece.type) {
-                console.log(1)
                 this.highlightMoves(piece, board)
             } else if (this.state.selected && !this.state.available.includes(piece) && piece.type) {
-                console.log(2)
                 this.unhighlightSelected(board)
                 this.highlightMoves(piece, board)            
             } else if (this.state.selected && !this.state.available.includes(piece) && !piece.type) {
-                console.log(3)
                 this.unhighlightSelected(board)
             } else if (this.state.selected && this.state.available.includes(piece)) {
                 const pieceSelected = this.state.selected
@@ -46,6 +44,7 @@ class App extends React.Component {
                 this.setState({
                     board: board,
                     selected: null,
+                    message: null,
                     turn: this.state.turn === 'white' ? 'black' : 'white'
                 })
             } else {
@@ -53,6 +52,23 @@ class App extends React.Component {
                     message: 'Please select a move'
                 })
             }
+        } else if (piece.colour !== this.state.turn && this.state.available.includes(piece)) {
+            const pieceSelected = {colour: piece.colour, pieceStyle: piece.pieceStyle}
+            const piecePreviouslySelected = this.state.selected
+            this.unhighlightSelected(board)
+
+            board = this.changeSquare(piece, board, piecePreviouslySelected)
+            board = this.changeSquare(piecePreviouslySelected, board)
+
+            
+            this.setState({
+                board: board,
+                selected: null,
+                message: null,
+                turn: this.state.turn === 'white' ? 'black' : 'white',
+                whiteTakenPiece: this.state.turn === 'white' ? this.state.whiteTakenPiece.concat([pieceSelected]) : this.state.whiteTakenPiece,
+                blackTakenPiece: this.state.turn == 'black' ? this.state.blackTakenPiece.concat([pieceSelected]) : this.state.blackTakenPiece
+            })
         } else {
             console.log('hey!')
             this.setState({message: 'Pick a piece of your own colour!'})
@@ -77,6 +93,7 @@ class App extends React.Component {
         this.setState({
             board: board,
             selected: piece,
+            message: null,
             available: moves
         })
     }
@@ -89,16 +106,29 @@ class App extends React.Component {
             .forEach((index) => board[index].available = false)
         this.setState({
             board: board,
-            selected: null
+            selected: null,
+            message: null
         })
     }
 
     render() {
         return (
-            <Board
-                boardState={this.state.board}
-                onClick={(i) => this.clickHandler(i)}
-            />
+            <div style={{
+                fontFamily: "'Open Sans', sans-serif"
+            }}>
+                <div className="sidebar">
+                    <Sidebar
+                    takenBlack={this.state.blackTakenPiece}
+                    takenWhite={this.state.whiteTakenPiece}
+                    />
+                </div>
+                <div className="game">
+                    <Board
+                    boardState={this.state.board}
+                    onClick={(i) => this.clickHandler(i)}
+                    />
+                </div>
+            </div>
         )
     }
 }

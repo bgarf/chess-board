@@ -48,8 +48,7 @@ function getMovesByDirection(piece, distance, direction, board) {
     
     existingPiece = getPiece(board, newX, newY)
     if (isWithinBoardParameter(newX, newY)) {
-      
-        if (!existingPiece) {
+        if (!existingPiece.colour) {
           avaiableMoves.push([newX, newY])
         } else {
             existingPiece.colour !== piece.colour ? avaiableMoves.push([newX, newY]) : null

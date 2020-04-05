@@ -1,10 +1,15 @@
+#root {
+    font-family: 'Open Sans', sans-serif;
+}
+
 #board-outer-border {
     width: 600px;
     height: 600px;
     margin: 5% auto;
-    background-color: #325bff;
+    float: left;
     border: 1px solid black;
     border-radius: 10px;
+    background-color: #325bff;
     box-shadow: 0px 0px 5px 0.5px black;
 }
 
@@ -17,18 +22,78 @@
     box-shadow: 0px 0px 24px 2px rgb(11, 35, 140);
 }
 
+#sidebar-outer {
+    width: 350px;
+    height: 600px;
+    margin: 5% 11%;
+    float: left;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #325bff;
+    box-shadow: 0px 0px 5px 0.5px black;
+}
+
+#sidebar-inner {
+    height: 490px;
+    width: 250px;
+    margin: 20.5px;
+    padding: 30px;
+    font-weight: 600;
+    font-size: 120%;
+    background-color: rgb(235, 242, 245); 
+    box-shadow: 0px 0px 24px 2px rgb(11, 35, 140);
+}
+
+.playersColour {
+    width: 30px;
+    height: 30px;
+    float: left;
+    position: absolute;
+    border-radius: 50%;
+    border: 0.1px solid black;
+}
+
+.white {
+    background-color: rgb(250, 250, 250)
+}
+
+.black {
+    background-color: rgb(0,0,0)
+}
+
+.playersName {
+    /* float: left; */
+    width: 100%;
+    text-align: center;
+    line-height: 30px;
+    margin: 0 0px 0 0;
+}
+            
+
+.takenPieceArea {
+    width: 100%;
+    height: 35%;
+    margin-bottom: 12%;
+    margin-top: 12%;
+    padding-top: 3px;
+    background-color: rgb(102, 160, 204);
+    border: 1px solid rgb(81, 134, 173);
+    border-radius: 10px;
+}
+
+.takenPiece {
+    width: 50px;
+    height: 50px;
+    float: left;
+    background-color: rgb(102, 160, 204);
+    border-radius: 10px;
+}
+
 .square {
     width: 69.8px;
     height: 69.8px;
     float: left;
     border: 0.1px solid black;
-}
-
-.clicked {
-    width: 65.9px;
-    height: 65.9px;
-    padding: 0px;
-    border: 2px solid yellow;
 }
 
 #board-inner-border div:nth-child(-2n+8), 
