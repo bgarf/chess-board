@@ -72,5 +72,6 @@ function isWithinBoardParameter(x, y) {
 module.exports = {
   getNewXPostionFromLetter,
   getMoves,
+  getMovesByDirection,
   isWithinBoardParameter
 }

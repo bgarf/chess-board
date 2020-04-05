@@ -1,6 +1,5 @@
 import { blackKing, blackQueen, blackBishop, blackKnight, blackRook, blackPawn, whiteKing, whiteQueen, whiteBishop, whiteKnight, whiteRook, whitePawn } from '../components/css/pieces.css'
-import { getPossibleKingMoves, getPossiblePawnMoves, getPossibleKnightMoves,
-  getPossibleBishopMoves, getPossibleRookMoves, getPossibleQueenMoves } from './Pieces'
+import { getPossibleKingMoves, getPossibleKnightMoves, getPossibleBishopMoves, getPossibleRookMoves, getPossibleQueenMoves, getPossiblePawnMoves } from './Pieces'
 
 export const colours = {
   WHITE: 'white',
@@ -15,8 +14,6 @@ const pieces = {
   QUEEN: 'queen',
   KING: 'king'
 }
-
-// const numberToLetterMapping = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H'}
 
 export function initialisePieces() {
     return [
@@ -62,7 +59,7 @@ export function initialisePieces() {
 export function getValidMoves(piece, board) {
   switch (piece.type) {
     case pieces.PAWN:
-      return getPossiblePawnMoves(piece.x, piece.y, piece.colour)
+      return getPossiblePawnMoves(piece, board)
     case pieces.KNIGHT:
       return getPossibleKnightMoves(piece, board)
     case pieces.BISHOP:
@@ -84,15 +81,3 @@ export function getPiece(board, x, y) {
       return piece[0]
     }
 }
-
-// export function getSquareArray(board) {
-//     let fullBoardArray = []
-//     // i = y axis & j = x axis 
-//     for (let i = 1; i <= 8 ; i++) {
-//         for (let j = 1; j <= 8; j++) {
-//             let piece = getPiece(board, numberToLetterMapping[j], i) 
-//             piece ? fullBoardArray.push(piece) : fullBoardArray.push('')
-//         }
-//     }
-//     return fullBoardArray
-// }

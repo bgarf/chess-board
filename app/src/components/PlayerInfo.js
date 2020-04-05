@@ -7,8 +7,6 @@ export class TakenPieceCollector extends React.Component {
     }
 
     renderTakenPieces() {
-        console.log('inside func: ' + this.props.children)
-
         return this.props.children.map(
             (piece, index) => {
                 return <div key={index} className={`${takenPiece} ${piece.pieceStyle}`}/>
@@ -17,7 +15,6 @@ export class TakenPieceCollector extends React.Component {
     }
 
     render() {
-        console.log('function: ' + this.renderTakenPieces())
         return (
             <div className={ takenPieceArea }>
                 { this.props.children ? this.renderTakenPieces() : ''} 

@@ -1,5 +1,5 @@
 import * as boardUtils from './Board.js'
-import { getNewXPostionFromLetter, getMoves, isWithinBoardParameter } from './PositionMovement'
+import { getNewXPostionFromLetter, getMoves, isWithinBoardParameter, getMovesByDirection } from './PositionMovement'
 
 const axisDirections = ['north', 'south', 'east', 'west']
 const diagonalDirections = ['northEast', 'southEast', 'northWest', 'southWest']
@@ -22,27 +22,26 @@ export function getPossibleQueenMoves(piece, board) {
             .concat(getMoves(piece, 8, axisDirections, board))
 }
 
-export function getPossiblePawnMoves(x, y, colour) {
-  const colours = boardUtils.colours
-  switch (colour) {
-    case colours.BLACK:
-      return getPawnMoves(x, y, 1, 2)
-    case colours.WHITE: 
-      return getPawnMoves(x, y, -1, -2)
-    default:
-      throw new Error('No pawn piece provided to the pawn move selector')
-  } 
+export function getPossiblePawnMoves(piece, board) {
+    return getPawnStandardMoves(piece, board).concat(getPawnDiagonalTakeMoves(piece, board))
+}
+      
+function getPawnStandardMoves(piece, board) {
+  const colourStarter = piece.colour === boardUtils.colours.BLACK ? ['north', 2] : ['south', 7]
+  const standardMoves = piece.y == colourStarter[1] ? getMovesByDirection(piece, 2, colourStarter[0], board) : getMovesByDirection(piece, 1, colourStarter[0], board)
+  return standardMoves.filter(coords => 
+    isWithinBoardParameter(coords[0], coords[1]) && (!boardUtils.getPiece(board, coords[0], coords[1]).type))
 }
 
-export function getPawnMoves(x, y, one, two) {
-  let oneForward = y + one
-  if (y == 2 || y == 7) {
-    return [[x, oneForward], [x, y + two]]
-  } else if (isWithinBoardParameter(x, oneForward)) {
-    return [[x, oneForward]]
-  } else {
-    return []
-  }
+function getPawnDiagonalTakeMoves(piece, board) {
+  const directions = piece.colour === boardUtils.colours.BLACK ? ['northEast', 'northWest'] : ['southEast', 'southWest']
+  return getMoves(piece, 1, directions, board)
+            .filter(
+                coords => 
+                    isWithinBoardParameter(coords[0], coords[1])
+                    && boardUtils.getPiece(board, coords[0], coords[1]).type
+                    && boardUtils.getPiece(board, coords[0], coords[1]).colour !== piece.colour
+            )
 }
 
 export function getPossibleKnightMoves(piece, board) {
@@ -53,7 +52,7 @@ export function getPossibleKnightMoves(piece, board) {
   })
   .filter(
     coords => 
-      isWithinBoardParameter(coords[0], coords[1]) 
-      && (!boardUtils.getPiece(board, coords[0], coords[1]) || boardUtils.getPiece(board, coords[0], coords[1]).colour !== piece.colour) 
+    isWithinBoardParameter(coords[0], coords[1]) 
+    && (!boardUtils.getPiece(board, coords[0], coords[1]) || boardUtils.getPiece(board, coords[0], coords[1]).colour !== piece.colour) 
   )
 }
