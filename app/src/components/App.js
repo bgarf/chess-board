@@ -1,7 +1,8 @@
 import React from 'react'
 import Board from './Board'
 import Sidebar from './Sidebar'
-const { initialisePieces, getValidMoves, getPiece } = require('../utils/Board.js')
+const { initialisePieces, getValidMoves, getPiece, pieces } = require('../utils/Board.js')
+import { messageBanner } from './css/board.css'
 
 const selected = {
     border: '0.1px solid rgb(255, 0, 234)'
@@ -60,18 +61,33 @@ class App extends React.Component {
             board = this.changeSquare(piece, board, piecePreviouslySelected)
             board = this.changeSquare(piecePreviouslySelected, board)
 
-            
-            this.setState({
-                board: board,
-                selected: null,
-                message: null,
-                turn: this.state.turn === 'white' ? 'black' : 'white',
-                whiteTakenPiece: this.state.turn === 'white' ? this.state.whiteTakenPiece.concat([pieceSelected]) : this.state.whiteTakenPiece,
-                blackTakenPiece: this.state.turn == 'black' ? this.state.blackTakenPiece.concat([pieceSelected]) : this.state.blackTakenPiece
-            })
+            if (this.isCheckMate()) {
+                this.setState(this.resetState(`CONGRATULATIONS CHECK MATE!!!`))
+            } else {          
+                this.setState({
+                    board: board,
+                    selected: null,
+                    message: null,
+                    turn: this.state.turn === 'white' ? 'black' : 'white',
+                    whiteTakenPiece: this.state.turn === 'white' ? this.state.whiteTakenPiece.concat([pieceSelected]) : this.state.whiteTakenPiece,
+                    blackTakenPiece: this.state.turn == 'black' ? this.state.blackTakenPiece.concat([pieceSelected]) : this.state.blackTakenPiece
+                })
+            }
         } else {
             console.log('hey!')
             this.setState({message: 'Pick a piece of your own colour!'})
+        }
+    }
+
+    resetState(message = '') {
+        return {
+            board: initialisePieces(),
+            selected: null,
+            available: [],
+            message: message,
+            turn: 'white',
+            whiteTakenPiece: [],
+            blackTakenPiece: []
         }
     }
 
@@ -111,11 +127,14 @@ class App extends React.Component {
         })
     }
 
+    isCheckMate() {
+        return this.state.board.filter(piece => piece.type == pieces.KING).length != 2 ? true : false
+    }
+
     render() {
         return (
-            <div style={{
-                fontFamily: "'Open Sans', sans-serif"
-            }}>
+            <div style={{fontFamily: "'Open Sans', sans-serif"}}>
+                { this.state.message ? <div className={ messageBanner } children={ this.state.message }/> : ''}
                 <div className="sidebar">
                     <Sidebar
                     takenBlack={this.state.blackTakenPiece}

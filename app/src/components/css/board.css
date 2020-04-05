@@ -62,7 +62,6 @@
 }
 
 .playersName {
-    /* float: left; */
     width: 100%;
     text-align: center;
     line-height: 30px;
@@ -77,7 +76,7 @@
     margin-top: 12%;
     padding-top: 3px;
     background-color: rgb(102, 160, 204);
-    border: 1px solid rgb(81, 134, 173);
+    border: 1px solid black;
     border-radius: 10px;
 }
 
@@ -94,6 +93,19 @@
     height: 69.8px;
     float: left;
     border: 0.1px solid black;
+}
+
+.message-banner {
+    width: 50%;
+    height: 3%;
+    padding: 0.5%;
+    margin: 1% 25%;
+    border-radius: 10px;
+    position: absolute;
+    background-color: aliceblue;
+    line-height: 100%;
+    text-align: center;
+    font-size: large;
 }
 
 #board-inner-border div:nth-child(-2n+8), 

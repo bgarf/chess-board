@@ -6,7 +6,7 @@ export const colours = {
   BLACK: 'black'
 }
 
-const pieces = {
+export const pieces = {
   PAWN: 'pawn',
   KNIGHT: 'knight',
   ROOK: 'rook',
