@@ -12,12 +12,12 @@ class Sidebar extends React.Component {
             <div id={ sidebarOuter }>
                 <div id={ sidebarInner }>
                     <div className={playerArea}>
-                        <div className={`${playersName} ${top}`}><div className={`${playersColour} ${black}`} />PLAYER 2 </div>
+                        <div className={`${playersName} ${top}`}><div className={`${playersColour} ${black}`} />Player 2 </div>
                         <TakenPieceCollector children={this.props.takenWhite}/>
                     </div>
                     <div className={playerArea}>
                         <TakenPieceCollector children={this.props.takenBlack}/>
-                        <div className={`${playersName}`}><div className={`${playersColour} ${white}`} />PLAYER 1</div>
+                        <div className={`${playersName}`}><div className={`${playersColour} ${white}`} />Player 1</div>
                     </div>
                 </div>
             </div>
