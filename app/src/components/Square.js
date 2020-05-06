@@ -17,7 +17,6 @@ class Square extends React.Component {
     }
 
     render () {
-        console.log('rendering square')
         const combinedClasses = `${square} ${this.props.className}`
         return <div 
             className={combinedClasses} 

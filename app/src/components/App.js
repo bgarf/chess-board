@@ -74,7 +74,6 @@ class App extends React.Component {
                 })
             }
         } else {
-            console.log('hey!')
             this.setState({message: 'Pick a piece of your own colour!'})
         }
     }
